@@ -1,5 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "dotenv/config";
 
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_PROCESS_ENV || "";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "0xKEY";
