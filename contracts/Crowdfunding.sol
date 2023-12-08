@@ -46,17 +46,26 @@ contract Crowdfunding {
     }
 
     function donateCampaign(uint _id) public payable {
-        uint amount = msg.value;
-
-        Campaign storage campaign = compaings[_id];
+        Campaign storage campaign = campaigns[_id];
         campaign.donators.push(msg.sender);
         campaign.donations.push(msg.value);
 
-        bool (success,) = payable(campaign.owner).call{value: msg.value}("");
+        (bool success, ) = payable(campaign.owner).call{value: msg.value}("");
         if (success) campaign.amountCollected += msg.value;
     }
 
-    function getDonators() public {}
+    function getDonators(
+        uint _id
+    ) public view returns (address[] memory, uint[] memory) {
+        return (campaigns[_id].donators, campaigns[_id].donations);
+    }
 
-    function getCampaigns() public {}
+    function getCampaigns() public view returns (Campaign[] memory) {
+        Campaign[] memory allCampaigns = new Campaign[](numberOfCampaigns);
+
+        for (uint i = 0; i < numberOfCampaigns; i++) {
+            allCampaigns[i] = campaigns[i];
+        }
+        return allCampaigns;
+    }
 }
